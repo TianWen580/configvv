@@ -1,4 +1,5 @@
 # CONFIG VV: A NEW WAY TO ANALYZE & GET OPENMMLAB CONFIG
+![](doc/img1.png)
 
 # TODO
 ## fix bugs
