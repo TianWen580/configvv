@@ -1,0 +1,338 @@
+/* fonts */
+@font-face {
+    font-family: 'Ali';
+    src: url('@/static/fonts/AlimamaFangYuanTi.ttf');
+    font-display: swap;
+}
+
+/* component styles */
+.VisListPanel, .ConfigBuilder {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 40px);
+    overflow-y: auto;
+}
+
+.VisListPanel {
+    padding: 16px;
+}
+
+.NestedCheckbox {
+    background: rgba(76, 76, 76, 0.725);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    overflow-y: auto;
+    z-index: 1002;
+}
+
+.VisualizingPanel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.DetialPanel, .TipIndicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #326af61e;
+    width: 100%;
+    height: 100%;
+    z-index: 1001;
+}
+
+.ConfigBuilder {
+    width: 100%;
+    height: 100%;
+}
+
+.panelScaler {
+    background: #fff;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 80%;
+    height: 80%;
+    display: flex;
+    border-radius: 16px;
+    flex-direction: column;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* general styles */
+.paddingTopArea {
+    color: transparent;
+    padding-top: 30px;
+}
+
+.paddingBottomArea {
+    color: transparent;
+    padding-bottom: 30px;
+}
+
+.largeTitleContainer {
+    background: linear-gradient(180deg, #326af61e 0%, #f5f5f5 50%, transparent 100%);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: calc(100% - 33px);
+    padding: 16px;
+    z-index: 1000;
+}
+
+.largeTitle, .largeMarginTitle {
+    font-family: 'Ali', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    width: 100%;
+    color: #3269f6;
+    white-space: nowrap;
+}
+
+.largeMarginTitle {
+    margin-left: 20px;
+    font-weight: 300;
+}
+
+.generalTitle {
+    font-family: 'Ali', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 8px;
+}
+
+.functionalBtnContainer {
+    background: lightgray;
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    display: flex;
+    padding: 3px;
+    border-radius: 10px;
+    gap: 3px;
+}
+
+.selectedBtn, .functionalBtn {
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.functionalBtn {
+    background: #f5f5f5;
+    color: gray;
+}
+
+.selectedBtn {
+    background: #fff;
+    color: #000;
+}
+
+.purpleNormalTitle {
+    padding: 5px;
+    text-transform: none !important;
+    color: #6638f0;
+    font-weight: 500;
+    border-radius: 5px;
+    transition: all 0.1s
+}
+
+.purpleNormalTitle:hover {
+    transform: scale(0.98);
+    background-color: #f5f5f5;
+}
+
+.purpleNormalTitle:active {
+    background-color: #fff;
+}
+
+.blackNormalTitle {
+    padding: 5px;
+    text-transform: none !important;
+    color: #000;
+    font-weight: 500;
+    border-radius: 5px;
+    transition: all 0.1s
+}
+
+.blackTitle {
+    color: #000 !important;
+}
+
+.purpleTitle {
+    color: #2552d6 !important;
+}
+
+.TitleBarContainer {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.TitleBarWarp, .TitleBarFunctionalWarp {
+    display: flex;
+    align-items: center;
+    background: rgba(222, 222, 222, 0.5);
+    backdrop-filter: blur(6px);
+    height: 40px;
+    border-radius: 8px;
+    z-index: 1000;
+}
+
+.TitleBarWarp {
+    padding: 0 10px;
+    gap: 10px;
+    text-transform: uppercase;
+}
+
+.TitleBarFunctionalWarp {
+    padding: 0 5px;
+    gap: 5px;
+}
+
+.reutrnBtn {
+    font-size: 30px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #000;
+}
+
+.checkbox {
+    padding: 6px;
+    height: 20px;
+    line-height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    background: #fff;
+    border-radius: 6px;
+    transition: all 0.3s;
+}
+
+.checkbox:hover {
+    box-shadow: 0 0 0 1px #6638f03c inset;
+    color: #6638f0;
+}
+
+.functionalTitle {
+    /* 字体要小，竖排 */
+    font-size: 12px;
+    font-weight: 700;
+    color: gray;
+    writing-mode: vertical-rl;
+}
+
+.warningIndicatorContainer {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    padding: 3px 6px;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+    gap: 6px;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1.05);
+}
+
+.statusLabel {
+    font-size: 12px;
+    font-weight: 700;
+    color: #333;
+}
+
+.warningInfo {
+    font-size: 12px;
+    font-weight: 700;
+    color: #333;
+}
+
+.warningIndicatorContainer:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.horizontal {
+    display: flex;
+    flex-direction: row;
+}
+
+.nothingHereContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: lightgray;
+}
+
+.nothingHereLabel {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* 动画fade */
+.fade-enter-active {
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1.05);
+}
+
+.fade-leave-active {
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1.05);
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+    transform: scale(0.98);
+}
+
+.fade-enter-to,
+.fade-leave {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* 动画popIn */
+.popIn-enter-active {
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1.05);
+}
+
+.popIn-leave-active {
+    transition: all 0s cubic-bezier(0.23, 1, 0.32, 1.05);
+}
+
+.popIn-enter,
+.popIn-leave-to {
+    opacity: 0;
+    transform: scale(1.05, 1.1);
+}
+
+.popIn-enter-to,
+.popIn-leave {
+    opacity: 1;
+    transform: scale(1);
+}

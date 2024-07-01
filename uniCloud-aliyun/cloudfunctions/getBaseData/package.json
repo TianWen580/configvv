@@ -1,0 +1,7 @@
+{
+  "name": "getBaseData",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}
