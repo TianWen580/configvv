@@ -2,24 +2,24 @@
     <view class="ConfigBuilder">
         <view class="TitleBarContainer">
             <view class="TitleBarWarp">
-                <view class="largeTitle deeppinkTitle">创建模型</view>
+                <view class="whiteTitle largeTitle">创建模型</view>
             </view>
             <view class="TitleBarFunctionalWarp">
                 <view class="checkbox" @click="toggleCheckbox(visualize.selectableMMLabToolboxes)">✦｜{{ isToolboxSelected ? builder.selectedToolbox : '请选择 MMLab 工具箱' }}</view>
             </view>
             <view class="TitleBarFunctionalWarp" v-if="isToolboxSelected">
-                <view class="functionalTitle">载入</view>
+                <view class="whiteTitle functionalTitle">载入</view>
                 <view class="checkbox" @click="loadFramework">骨架</view>
                 <view class="checkbox" @click="loadDemo">参考</view>
             </view>
             <view class="TitleBarFunctionalWarp" v-if="isToolboxSelected">
-                <view class="functionalTitle">预设</view>
+                <view class="whiteTitle functionalTitle">预设</view>
                 <view class="checkbox">backbone</view>
                 <view class="checkbox">neck</view>
                 <view class="checkbox">head</view>
             </view>
             <view class="TitleBarFunctionalWarp" v-if="isToolboxSelected">
-                <view class="functionalTitle">工具</view>
+                <view class="whiteTitle functionalTitle">工具</view>
                 <view class="checkbox" @click="refreshTipReference('backbone')">提示器</view>
                 <view class="checkbox" @click="exportPyConfig">导出</view>
             </view>
@@ -27,7 +27,6 @@
         <view class="nothingHereContainer" v-if="Object.keys(builder.modelStructure) <= 0">
             <view class="nothingHereLabel">✦ 空空如也 ✦</view>
         </view>
-        <view class="paddingTopArea">.</view>
         <view class="scrollButtonsContainer">
             <view class="leftButton" @click="scroll('left')">👈</view>
             <view class="rightButton" @click="scroll('right')">👉</view>
@@ -36,7 +35,7 @@
             <view v-if="builder.warning === ''">
                 <view class="statusLabel" :style="{ color: 'green' }">✦｜无异常</view>
             </view>
-            <view v-else>
+            <view class="horizontal" v-else>
                 <view class="statusLabel" :style="{ color: 'orangered' }">注意｜</view>
                 <view class="warningInfo" :style="{ color: 'orangered' }">{{ builder.warning }}</view>
             </view>
@@ -131,14 +130,6 @@ export default {
             };
             container.scrollTo(scrollOptions);
         },
-        refreshValue(index, label, newValue) {
-            this.$store.commit('builder/updateComponentParamValue', {
-                index: index,
-                label: label,
-                newValue: newValue
-            });
-            this.$store.commit('builder/setShowValueEditor', false);
-        },
         refreshTipReference(index) {
             this.$store.commit('builder/refreshTipReference', { componentName: index, instruction: this.visualize.baseData[this.builder.selectedToolbox].instruction})
             this.$store.commit('builder/setShowTipIndicator', true);
@@ -159,7 +150,38 @@ export default {
                 });
             }
         },
+        refreshValue(index, label, newValue) {
+            try {
+                // to JSON
+                const parsedValue = JSON.parse(newValue);
+                this.$store.commit('builder/updateComponentParamValue', {
+                    index: index,
+                    label: label,
+                    newValue: parsedValue
+                });
+            } catch (e) {
+                // roll back to string
+                this.$store.commit('builder/updateComponentParamValue', {
+                    index: index,
+                    label: label,
+                    newValue: newValue
+                });
+            }
+            this.$store.commit('builder/setShowValueEditor', false);
+
+            // check if contains Chinese characters
+            if (/[^\x00-\x7F]/.test(newValue)) {
+                this.$store.commit('builder/setWarning', '包含中文符号，请修正');
+            } else {
+                this.$store.commit('builder/setWarning', '');
+            }
+        },
         exportPyConfig() {
+            if (this.builder.warning !== '') {
+                alert('❌ 错误：' + this.builder.warning);
+                return;
+            }
+
             const demo = this.builder.modelStructure;
 
             function convertToPythonDict(obj, indent = 4, level = 1) {
@@ -211,12 +233,22 @@ export default {
 </script>
 
 <style scoped>
-.TitleBarContainer {
-    top: 60px;
+/* global */
+.nothingHereLabel {
+    color: rgba(0, 0, 0, 0.3);
 }
 
-.paddingTopArea {
-    padding-top: 70px;
+/* general */
+.TitleBarWarp {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.TitleBarFunctionalWarp {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.TitleBarContainer {
+    top: 60px;
 }
 
 .scrollButtonsContainer {
@@ -235,8 +267,8 @@ export default {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     padding: 20px 8px;
-    background-color: #fff;
-    border: 1px solid #f5e966;
+    background: #fff;
+    border: 1px solid lightgray;
     border-radius: 5px;
     pointer-events: auto;
     transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1.05);
@@ -244,10 +276,10 @@ export default {
 
 .leftButton:hover, .rightButton:hover {
     transform: scale(1.1, 1.2);
-    background-color: #fff9e6;
 }
 
 .builderContainer {
+    background: linear-gradient(180deg, #4f6dee, #67bdf9);
     width: calc(100% - 40px);
     height: 100%;
     display: flex;
@@ -255,12 +287,14 @@ export default {
     justify-content: flex-start;
     align-items: flex-start;
     padding: 20px;
+    padding-top: 110px;
     gap: 10px;
     overflow: auto;
 }
 
 .componentContainer {
-    border: 1px solid #f0f0f0;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -268,6 +302,11 @@ export default {
     padding: 6px;
     border-radius: 6px;
     gap: 6px;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1.05);
+}
+
+.componentContainer:hover {
+    box-shadow: 0 0 0 1px #fff;
 }
 
 .componentTitle {
@@ -399,5 +438,22 @@ export default {
 
 .addParamBtn:hover {
     color: #333;
+}
+
+@media (max-width: 768px) {
+    .TitleBarContainer {
+        padding: 0 20px;
+        width: calc(100% - 40px);
+        transform: translateX(-20px);
+        overflow-x: auto;
+    }
+
+    .TitleBarContainer::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollButtonsContainer {
+        display: none;
+    }
 }
 </style>

@@ -28,13 +28,13 @@ export default {
             variantOptions: {},
             selectedTipVariance: '',
             componentCaptions: {
-                "type": "定义",
-                "data_preprocessor": "数据预处理",
-                "backbone": "主干网络",
-                "neck": "在输入解码器之前的特征融合模块",
-                "decode_head": "解码器",
-                "train_cfg": "模型的训练配置（通常关闭）",
-                "test_cfg": "模型的测试配置"
+                "type": "定义：模型的基本类型，如分类器或检测器",
+                "data_preprocessor": "数据预处理：对输入数据进行处理的模块，如标准化和归一化",
+                "backbone": "主干网络：特征提取的核心网络，一般用于提取输入图像的高层特征",
+                "neck": "特征融合模块：在输入解码器之前对多层特征进行融合的模块",
+                "decode_head": "解码器：用于生成最终输出的模块，如分割掩码、边界框……",
+                "train_cfg": "训练配置：定义模型训练过程中的参数和配置",
+                "test_cfg": "测试配置：定义模型测试或推理过程中的参数和配置"
             },
             changeRules: {
                 "type": [],

@@ -3,7 +3,7 @@
         <view class="TitleBarContainer">
             <view class="TitleBarWarp">
                 <view class="reutrnBtn" @click="closePanel">⤫</view>
-                <view class="largeTitle deeppinkTitle">{{ visualize.selectedMMLabToolbox }}</view>
+                <view class="largeTitle whiteTitle">{{ visualize.selectedMMLabToolbox }}</view>
             </view>
             <view class="TitleBarFunctionalWarp">
                 <view class="checkbox" @click="toggleCheckbox(getOptionsDirectly())">模型｜{{ visualize.selectedModelPath[0] ? visualize.selectedModelPath[0] : '未选择' }}</view>
@@ -14,7 +14,7 @@
             <view class="nothingHereLabel">✦ 空空如也 ✦</view>
         </view>
         <view class="contentContainer" v-if="visualize.selectedModelPath.length === 2">
-            <view class="paddingTopArea">.</view>
+            <view class="paddingArea">.</view>
             <view class="summaryPanelContainer">
                 <view class="summaryContainer" v-for="(summary, index) in summaryData" :key="index">
                     <view class="summaryTitle">{{ index }}</view>
@@ -22,7 +22,7 @@
                 </view>
             </view>
             <view class="ParamContainer" v-for="(meta, index) in modelMeta" :key="index">
-                <view class="generalTitle">{{ index }}</view>
+                <view class="whiteTitle generalTitle">{{ index }}</view>
                 <view v-if="typeof meta === 'object'">
                     <view :class="label === 'type' ? 'recordSpecialContainer' : 'recordContainer'" v-for="(record, label) in meta" :key="label">
                         <view class="recordLabel">{{ label }}</view>
@@ -128,7 +128,7 @@ export default {
 
 <style scoped>
 /* global */
-.paddingTopArea {
+.paddingArea {
     padding-top: 40px;
 }
 
@@ -151,7 +151,7 @@ export default {
 }
 
 .ParamContainer:hover {
-    background: #f0f0f0;
+    background: rgba(0, 0, 0, 0.1);
 }
 
 .recordContainer, .recordSpecialContainer {
@@ -207,8 +207,8 @@ export default {
     align-items: center;
     padding: 3px 5px;
     border-radius: 6px;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-    background: #6638f0;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 1);
+    background: #fff;
     transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1.05);
     gap: 10px;
 }
@@ -219,16 +219,26 @@ export default {
 
 .summaryTitle {
     font-size: 14px;
-    color: #fff;
+    color: #6638f0;
 }
 
 .summaryData {
-    background: #fff;
+    background: #6638f0;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+    color: #fff;
     font-weight: 700;
     font-size: 14px;
-    color: #6638f0;
     padding: 3px 6px;
     border-radius: 4px;
-    box-shadow: 0 0 5px rgba(255, 255, 255, 1);
+}
+
+@media (max-width: 768px) {
+    .largeTitle {
+        display: none;
+    }
+
+    .checkbox {
+        max-width: 120px;
+    }
 }
 </style>

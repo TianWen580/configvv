@@ -12,7 +12,7 @@
                 </view>
                 <view class="TitleBarFunctionalWarp">
                     <view class="functionalTitle">工具</view>
-                    <view class="checkbox" @click="saveAll">保存</view>
+                    <view class="checkbox" @click="saveAll" :style="!isNotWarningToSaveAll ? {'background': '#6638f0', 'color': '#fff'} : {'color': 'gray'}">保存</view>
                 </view>
             </view>
             <view class="warningIndicatorContainer">
@@ -25,21 +25,21 @@
                 </view>
             </view>
             <view class="firstContainer">
-                <view class="paddingTopArea">.</view>
+                <view class="paddingArea">.</view>
                 <view class="largeTitle deeppinkTitle">可选项</view>
                 <view class="caption">当前已构建的 {{ builder.curTipReferenceBelonger }} 变种｜{{ builder.modelStructure['components'][builder.curTipReferenceBelonger].type }}</view>
                 <view class="largeCheckboxContainer">
                     <view
                         class="largeCheckbox"
                         @click="toggleCheckbox(getTipOptions())"
-                        :style="builder.selectedTipOption !== '' ? {'border': '1px solid #6638f0'} : {}"
+                        :style="builder.selectedTipOption !== '' ? {'background': '#6638f0', 'color': '#fff'} : {}"
                         >
                         基线｜{{ builder.selectedTipOption === '' ? '如换变种，先换基线' : builder.selectedTipOption }}
                     </view>
                     <view
                         class="largeCheckbox"
                         @click="toggleCheckbox(getTipVariantOptions())"
-                        :style="(builder.selectedTipVariance !== '' || builder.selectedTipVariance !== undefined) ? {'border': '1px solid #6638f0'} : {}"
+                        :style="(builder.selectedTipVariance !== '') ? {'background': '#6638f0', 'color': '#fff'} : {}"
                         >
                         变种｜{{ (builder.selectedTipVariance === '' || builder.selectedTipVariance === undefined) ? '可更换' : builder.selectedTipVariance }}
                     </view>
@@ -51,8 +51,10 @@
                         <view class="paramName">{{ param }}</view>
                         <view class="paramValue">{{ getParamValue(param) }}</view>
                         <view class="addBtn" v-if="showAddButton(param)" @click="addNewParam(param)">+ 添加</view>
+                        <view class="deleteBtn" v-if="!showAddButton(param) && param !== 'type'" @click="deleteOldParam(param)">删除</view>
                     </view>
                 </view>
+                <view class="paddingArea">.</view>
             </view>
         </view>
     </view>
@@ -72,11 +74,16 @@ export default {
             return this.$store.state.visualize;
         },
         isNotWarningToSaveAll() {
-            if (this.builder.selectedTipVariance !== '' && this.builder.curTipReferenceBelonger !== '') {
-                const curType = this.builder.modelStructure['components'][this.builder.curTipReferenceBelonger].type;
-                const variants = this.builder.selectedTipVariance;
+            if (this.builder.curTipReferenceBelonger !== '') {
+                const tempParams = this.tempModelStructure.components[this.builder.curTipReferenceBelonger];
+                const originalParams = this.builder.modelStructure['components'][this.builder.curTipReferenceBelonger];
 
-                return curType === variants
+                // Convert objects to strings to compare values
+                const tempParamsStr = JSON.stringify(tempParams);
+                const originalParamsStr = JSON.stringify(originalParams);
+
+                // Check for differences
+                return tempParamsStr === originalParamsStr;
             }
             return false;
         },
@@ -151,12 +158,14 @@ export default {
         addNewParam(param) {
             this.$set(this.tempModelStructure.components[this.builder.curTipReferenceBelonger], param, '');
         },
+        deleteOldParam(param) {
+            this.$delete(this.tempModelStructure.components[this.builder.curTipReferenceBelonger], param);
+        },
         saveAll() {
             if (this.isNotWarningToSaveAll) {
                 alert('不需要保存哦');
             } else {
                 this.$store.commit('builder/refreshModelStructure', this.tempModelStructure);
-                alert('保存成功！');
             }
         }
     },
@@ -164,23 +173,23 @@ export default {
         this.tempModelStructure = JSON.parse(JSON.stringify(this.builder.modelStructure));
     },
     watch: {
-    '$store.state.settings.nestedCheckboxSelectedValue'(newVal) {
-        if (Object.keys(this.builder.component2InstructionRefer).includes(newVal)) {
-            this.refreshTipReference(newVal);
-        } else if (this.builder.tipOptions.includes(newVal)) {
-            this.$store.commit('builder/setSelectedTipOption', newVal);
-        } else if (this.builder.variantOptions.includes(newVal)) {
-            this.$store.commit('builder/setSelectedTipVariance', newVal);
-            this.tempModelStructure.components[this.builder.curTipReferenceBelonger].type = newVal;
+        '$store.state.settings.nestedCheckboxSelectedValue'(newVal) {
+            if (Object.keys(this.builder.component2InstructionRefer).includes(newVal)) {
+                this.refreshTipReference(newVal);
+            } else if (this.builder.tipOptions.includes(newVal)) {
+                this.$store.commit('builder/setSelectedTipOption', newVal);
+            } else if (this.builder.variantOptions.includes(newVal)) {
+                this.$store.commit('builder/setSelectedTipVariance', newVal);
+                this.tempModelStructure.components[this.builder.curTipReferenceBelonger].type = newVal;
+            }
         }
     }
-}
 }
 </script>
 
 <style scoped>
 /* global */
-.paddingTopArea {
+.paddingArea {
     padding-top: 50px;
 }
 
@@ -262,6 +271,10 @@ export default {
     cursor: pointer;
 }
 
+.addBtn:hover {
+    font-weight: 700;
+}
+
 .paramValue {
     font-size: 14px;
     color: #333;
@@ -270,5 +283,34 @@ export default {
 .caption {
     font-size: 14px;
     color: lightgray;
+}
+
+.deleteBtn {
+    padding: 1px 6px;
+    font-size: 12px;
+    background: #fff;
+    color: #000;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1.05);
+}
+
+.deleteBtn:hover {
+    background: lightpink;
+    color: red;
+    box-shadow: 0 0 0 1px red inset;
+}
+
+@media (max-width: 768px) {
+    .panelScaler {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .largeCheckboxContainer {
+        flex-direction: column;
+        gap: 0;
+    }
 }
 </style>

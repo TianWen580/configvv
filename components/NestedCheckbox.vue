@@ -1,7 +1,9 @@
 <template>
     <view class="NestedCheckbox">
-        <view v-for="(key, index) in settings.nestedCheckboxOptions" :key="index" class="selection" @click="handleSelection(key)">
-            <label>{{ key }}</label>
+        <view class="roundContainer">
+            <view v-for="(key, index) in settings.nestedCheckboxOptions" :key="index" class="selection" @click="handleSelection(key)">
+                <label>{{ key }}</label>
+            </view>
         </view>
     </view>
 </template>
@@ -27,21 +29,31 @@ export default {
 </script>
 
 <style scoped>
+.roundContainer {
+    width: 360px;
+    background: #fff;
+    border: 3px solid lightgray;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+}
+
 .selection {
-    background: #f0f0f0;
-    color: #333;
+    background: #fff;
+    color: #000;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     border-bottom: 1px solid lightgray;
-    width: 300px;
+    border-radius: 6px;
+    padding: 0 10px;
+    width: calc(100% - 20px);
     height: 50px;
-    padding: 10px 20px;
     cursor: pointer;
 }
 
 .selection:hover {
-    background: #e0e0e0;
-    box-shadow: 0 0 0 1px #3269f6 inset;
+    background: #326af60e;
+    box-shadow: 0 0 6px 1px #3269f6 inset;
 }
 </style>

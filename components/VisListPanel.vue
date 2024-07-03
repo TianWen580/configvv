@@ -1,26 +1,22 @@
 <template>
     <view class="VisListPanel">
-        <view class="paddingTopArea">.</view>
-        <transition name="fade">
-            <view class="navPathBarContainer" v-if="visualize.navPath.length > 0">
-                <view class="pathNode rootPathNode" @click="$store.commit('visualize/cleanSelectedMMLabToolbox')">⎈</view>
-                <view class="pathWarp" v-for="(name, index) in visualize.navPath" :key="index">
-                    <view class="pathNode">{{ name }}</view>
-                    <span>·</span>
+        <view class="paddingArea">.</view>
+        <view class="navPathBarContainer" v-if="visualize.navPath.length > 0">
+            <view class="pathNode rootPathNode" @click="$store.commit('visualize/cleanSelectedMMLabToolbox')">⎈</view>
+            <view class="pathWarp" v-for="(name, index) in visualize.navPath" :key="index">
+                <view class="pathNode">{{ name }}</view>
+                <span>‣</span>
+            </view>
+        </view>
+        <view class="contentContainer">
+            <view class="navDirectoryLeftbarContainer" v-if="visualize.navDirectory.length > 0">
+                <view class="generalTitle">目录</view>
+                <view v-for="(name, index) in visualize.navDirectory" :key="index">
+                    <view class="directoryhNode">{{ name }}</view>
                 </view>
             </view>
-        </transition>
-        <view class="contentContainer">
-            <transition name="fade">
-                <view class="navDirectoryLeftbarContainer" v-if="visualize.navDirectory.length > 0">
-                    <view class="generalTitle">目录</view>
-                    <view v-for="(name, index) in visualize.navDirectory" :key="index">
-                        <view class="directoryhNode">{{ name }}</view>
-                    </view>
-                </view>
-            </transition>
             <view class="mainSelectorContainer withPadding" v-if="visualize.selectedMMLabToolbox === ''">
-                <view class="blackTitle largeTitle">OpenMMLab 工具箱</view>
+                <view class="whiteTitle largeTitle">OpenMMLab 工具箱</view>
                 <view class="toolboxInfoGridContainer">
                     <view class="toolboxInfoContainer" v-for="(toolbox, index) in visualize.selectableMMLabToolboxes" :key="index">
                         <view class="toolboxNameLabel">{{ toolbox }}</view>
@@ -29,8 +25,6 @@
                         <view class="selectBtn" @click="setSelectedToolbox(toolbox)">浏览模型</view>
                     </view>
                 </view>
-                <view class="blackTitle largeTitle">我的配置文件</view>
-                <view>✦ 空空如也</view>
             </view>
             <view class="mainSelectorContainer" v-else>
                 <VisualizingPanel />
@@ -120,7 +114,7 @@ export default {
 }
 
 .navDirectoryLeftbarContainer {
-    width: 20%;
+    width: 15%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -131,12 +125,11 @@ export default {
 
 .directoryhNode {
     background: #fff;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
     color: #2552d6;
     padding: 3px 6px;
     border-radius: 6px;
     margin: 6px 0;
-    cursor: pointer;
     transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1.05);
 }
 
@@ -145,7 +138,7 @@ export default {
 }
 
 .mainSelectorContainer {
-    background: #fff;
+    background: linear-gradient(180deg, #4f6dee, #67bdf9);
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
     flex: 1;
     height: 100%;
@@ -153,13 +146,14 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+    border: 1px solid lightgray;
     border-radius: 16px;
     gap: 16px;
-    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1.05);
 }
 
 .toolboxInfoGridContainer {
     display: flex;
+    flex-wrap: wrap;
     gap: 16px;
 }
 
@@ -185,8 +179,7 @@ export default {
 .toolboxNameLabel {
     font-family: 'Ali', sans-serif;
     font-size: 20px;
-    font-weight: 300;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     color: #2552d6;
 }
 
@@ -222,5 +215,23 @@ img {
 
 .selectBtn:active {
     transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+    .mainSelectorContainer {
+        width: calc(100% - 40px);
+    }
+
+    .navPathBarContainer {
+        display: none;
+    }
+
+    .navDirectoryLeftbarContainer {
+        display: none;
+    }
+
+    .toolboxInfoContainer {
+        min-width: 90%;
+    }
 }
 </style>

@@ -1,10 +1,12 @@
 <template>
 	<view class="index">
 		<DetailPanel v-if="visualize.isShowDetailPanel"/>
-		<NestedCheckbox v-if="visualize.isShowCheckbox"/>
+		<transition name="popIn">
+			<NestedCheckbox v-if="visualize.isShowCheckbox"/>
+		</transition>
 		<TipIndicator v-if="builder.isShowTipIndicator"/>
 		<view class="largeTitleContainer">
-			<view class="largeTitle">CONFIG (◡‿◡✿)</view>
+			<view :class="settings.selectedPage === 1 ? 'whiteTitle largeTitle': 'largeTitle'">CONFIG (◡‿◡✿)</view>
 			<view class="functionalBtnContainer">
 				<view
 					v-for="(index, name) in settings.mainPagefunctionalBtns"

@@ -17,7 +17,7 @@
                 </view>
             </view>
             <view class="contentContainer">
-                <view class="paddingTopArea">.</view>
+                <view class="paddingArea">.</view>
                 <view v-if="typeof visualize.detailPanelData.paramValue === 'object' && !Array.isArray(visualize.detailPanelData.paramValue)">
                     <view class="largeMarginTitle">参数值字典</view>
                     <view class="paramContainer" v-for="(value, index) in visualize.detailPanelData.paramValue" :key="index">
@@ -100,7 +100,7 @@ export default {
     margin-left: 16px;
 }
 
-.paddingTopArea {
+.paddingArea {
     height: 50px;
 }
 
@@ -139,5 +139,21 @@ export default {
 .paramValue {
     font-size: 13px;
     color: #666;
+}
+
+@media (max-width: 768px) {
+    .panelScaler {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .TitleBarFunctionalWarp {
+        display: none;
+    }
+
+    .deeppinkTitle {
+        display: none;
+    }
 }
 </style>
